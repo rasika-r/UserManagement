@@ -1,0 +1,69 @@
+@UserManagementAPI_HostAddress = http://localhost:5297
+@token = Bearer valid_test_token_12345
+
+### Get all users (protected - requires token)
+GET {{UserManagementAPI_HostAddress}}/api/users
+Authorization: {{token}}
+Accept: application/json
+
+###
+
+### Get user by ID (protected)
+GET {{UserManagementAPI_HostAddress}}/api/users/1
+Authorization: {{token}}
+Accept: application/json
+
+###
+
+### Create user (protected)
+POST {{UserManagementAPI_HostAddress}}/api/users
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "firstName": "Alice",
+  "lastName": "Johnson",
+  "email": "alice@example.com",
+  "department": "Engineering"
+}
+
+###
+
+### Update user (protected)
+PUT {{UserManagementAPI_HostAddress}}/api/users/1
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Updated",
+  "email": "john.updated@example.com",
+  "department": "Management"
+}
+
+###
+
+### Delete user (protected)
+DELETE {{UserManagementAPI_HostAddress}}/api/users/1
+Authorization: {{token}}
+
+###
+
+### Access Swagger (public - no token needed)
+GET {{UserManagementAPI_HostAddress}}/swagger/index.html
+Accept: text/html
+
+###
+
+### Test without token (should get 401)
+GET {{UserManagementAPI_HostAddress}}/api/users
+Accept: application/json
+
+###
+
+### Test with invalid token (should get 401)
+GET {{UserManagementAPI_HostAddress}}/api/users
+Authorization: Bearer short
+Accept: application/json
+
+###

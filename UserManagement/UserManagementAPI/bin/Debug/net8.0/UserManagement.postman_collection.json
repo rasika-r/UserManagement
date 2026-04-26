@@ -1,0 +1,370 @@
+{
+  "info": {
+    "_postman_id": "user-management-api-collection",
+    "name": "User Management API with Authentication",
+    "description": "Collection for testing User Management API endpoints with Bearer token authentication for TechHive Solutions",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "valid_test_token_12345",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5297/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users"]
+            },
+            "description": "Retrieve a list of all users. Requires valid Bearer token."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5297/api/users/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users", "1"]
+            },
+            "description": "Retrieve a specific user by their ID. Requires valid Bearer token."
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@techhive.com\",\n  \"department\": \"Engineering\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5297/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users"]
+            },
+            "description": "Create a new user record. Requires valid Bearer token."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"email\": \"john.smith@techhive.com\",\n  \"department\": \"Engineering\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5297/api/users/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users", "1"]
+            },
+            "description": "Update an existing user's details. Requires valid Bearer token."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5297/api/users/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users", "1"]
+            },
+            "description": "Delete a user by their ID. Requires valid Bearer token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication Tests",
+      "item": [
+        {
+          "name": "Request WITHOUT Token (401 Error)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5297/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users"]
+            },
+            "description": "This request will fail with 401 Unauthorized because no Authorization header is provided."
+          },
+          "response": []
+        },
+        {
+          "name": "Request with Invalid Token (401 Error)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer short",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5297/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users"]
+            },
+            "description": "This request will fail with 401 Unauthorized because the token is too short (must be at least 10 characters)."
+          },
+          "response": []
+        },
+        {
+          "name": "Request with Invalid Bearer Format (401 Error)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "InvalidFormat some_token",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5297/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users"]
+            },
+            "description": "This request will fail with 401 Unauthorized because the token format is invalid (must start with 'Bearer ')."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Cases",
+      "item": [
+        {
+          "name": "Create User - Invalid Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"email\": \"invalid-email\",\n  \"department\": \"IT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5297/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users"]
+            },
+            "description": "Test validation: Invalid email format. Returns 400 Bad Request."
+          },
+          "response": []
+        },
+        {
+          "name": "Create User - Missing Required Field",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"department\": \"IT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5297/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users"]
+            },
+            "description": "Test validation: Missing email field. Returns 400 Bad Request."
+          },
+          "response": []
+        },
+        {
+          "name": "Create User - Duplicate Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Duplicate\",\n  \"lastName\": \"User\",\n  \"email\": \"john.doe@techhive.com\",\n  \"department\": \"Marketing\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5297/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users"]
+            },
+            "description": "Test validation: Duplicate email - should fail if user already exists. Returns 400 Bad Request."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Non-Existent User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer valid_test_token_12345",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5297/api/users/999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["api", "users", "999"]
+            },
+            "description": "Test 404 error: Get user with non-existent ID. Returns 404 Not Found."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Public Routes (No Auth Required)",
+      "item": [
+        {
+          "name": "Get Swagger Documentation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5297/swagger/v1/swagger.json",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": ["swagger", "v1", "swagger.json"]
+            },
+            "description": "Access Swagger API documentation. No authentication required."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Swagger UI",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5297/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5297",
+              "path": [""]
+            },
+            "description": "Access Swagger UI interface. No authentication required."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
